@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Panels & 3D Music Visualizer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            background: #242424;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .panel-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .glass-panel {
+            width: 50%;
+            height: 70vh;
+            margin: 12.5vh auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(8px);     
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            scroll-snap-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .image-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin-right: 20px; /* Espacio entre imagen y video */
+        }
+
+        .static-image {
+            position: absolute;
+            top: -105px;
+            left: -200px;
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .clickable-image {
+            position: absolute;
+            top: 200px;
+            left: 70px;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        video {
+            position: absolute;
+            top: 50px;
+            left: 380px;
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        #playButton {
+            position: fixed;
+            bottom: 20px;
+            left: 7%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 9999;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="glass-panel">
+        <div style="display: flex; align-items: center;">
+            <div class="image-container">
+                <a href="https://ejemplo.com" target="_blank">
+                    <img class="clickable-image" src="comprar.png" alt="Imagen clickeable">
+                </a>
+                <img class="static-image" src="casa.jpg" alt="Imagen estática">
+            </div>
+            <video controls>
+                <source src="local.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de videos.
+            </video>
+        </div>
+    </div>
+    <div class="glass-panel">
+        <div style="display: flex; align-items: center;">
+            <div class="image-container">
+                <a href="https://ejemplo.com" target="_blank">
+                    <img class="clickable-image" src="comprar.png" alt="Imagen clickeable">
+                </a>
+                <img class="static-image" src="casa.jpg" alt="Imagen estática">
+            </div>
+            <video controls>
+                <source src="local.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de videos.
+            </video>
+        </div>
+    </div>
+
+    <button id="playButton">Pausar</button>
+
+    <script type="module">
+        import { Particle } from './js/Particle.js';
+        import { AudioAnalyzer } from './js/AudioAnalyzer.js';
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const audio = new Audio('beyond_dreams.mp3');
+        const playButton = document.getElementById('playButton');
+
+        const audioAnalyzer = new AudioAnalyzer(audio);
+        const particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const particleCount = Math.floor((canvas.width * canvas.height) / 3500);
+            particles.length = 0;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle(canvas.width, canvas.height));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const intensity = audioAnalyzer.getIntensity();
+
+            particles.forEach(particle => {
+                const projection = particle.update(intensity);
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, intensity + 0.3)})`;
+                ctx.beginPath();
+                ctx.arc(projection.x, projection.y, projection.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        playButton.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play().then(() => {
+            console.log('Audio is playing');
+            playButton.textContent = 'Pausar'; // Cambiar a "Pausar"
+        }).catch(err => console.error(err));
+    } else {
+        audio.pause();
+        console.log('Audio is paused');
+        playButton.textContent = 'Reproducir'; // Cambiar a "Reproducir"
+    }
+});
+
+
+        resizeCanvas();
+        animate();
+
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('load', async () => {
+            try {
+                await audioAnalyzer.togglePlay();
+            } catch (err) {
+                console.log('Autoplay prevented - waiting for user interaction');
+            }
+        });
+    </script>
+</body>
+</html>
