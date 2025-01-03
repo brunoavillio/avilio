@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Glass Panels & 3D Music Visualizer</title>
     <style>
         body {
@@ -11,6 +11,7 @@
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             background: #242424;
+            font-family: Arial, sans-serif;
         }
 
         canvas {
@@ -23,72 +24,58 @@
             z-index: -1;
         }
 
-        .panel-container {
-            width: 100%;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
         .glass-panel {
-            width: 50%;
-            height: 70vh;
-            margin: 12.5vh auto;
+            width: 90%;
+            margin: 20px auto;
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(0px);
-            -webkit-backdrop-filter: blur(8px);     
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-            scroll-snap-align: center;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            position: relative;
+            padding: 10px;
         }
 
         .image-container {
             position: relative;
-            width: 150px;
-            height: 150px;
-            margin-right: 20px; /* Espacio entre imagen y video */
+            width: 100px;
+            height: 100px;
+            margin: 10px 0;
         }
 
         .static-image {
             position: absolute;
-            top: -105px;
-            left: -200px;
-            width: 250px;
-            height: 250px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             border-radius: 10px;
-            z-index: 1;
         }
 
         .clickable-image {
             position: absolute;
-            top: 200px;
-            left: 70px;
-            width: 50px;
-            height: 50px;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
             object-fit: cover;
             border-radius: 10px;
+            cursor: pointer;
         }
 
         video {
-            position: absolute;
-            top: 50px;
-            left: 380px;
-            width: 250px;
-            height: 250px;
+            width: 80%;
             border-radius: 10px;
             object-fit: cover;
         }
 
         #playButton {
-            position: fixed;
-            bottom: 20px;
-            left: 7%;
-            transform: translateX(-50%);
+            margin: 20px 0;
             padding: 15px 30px;
             background: rgba(255, 255, 255, 0.2);
             border: none;
@@ -96,8 +83,33 @@
             color: white;
             cursor: pointer;
             font-size: 16px;
-            z-index: 9999;
-            pointer-events: auto;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .glass-panel {
+                width: 95%;
+                margin: 10px auto;
+                padding: 5px;
+            }
+
+            .image-container {
+                width: 80px;
+                height: 80px;
+            }
+
+            .clickable-image {
+                width: 30px;
+                height: 30px;
+            }
+
+            video {
+                width: 90%;
+            }
+
+            #playButton {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
         }
     </style>
 </head>
@@ -105,32 +117,16 @@
     <canvas id="canvas"></canvas>
 
     <div class="glass-panel">
-        <div style="display: flex; align-items: center;">
-            <div class="image-container">
-                <a href="https://ejemplo.com" target="_blank">
-                    <img class="clickable-image" src="comprar.png" alt="Imagen clickeable">
-                </a>
-                <img class="static-image" src="casa.jpg" alt="Imagen estática">
-            </div>
-            <video controls>
-                <source src="local.mp4" type="video/mp4">
-                Tu navegador no soporta la reproducción de videos.
-            </video>
+        <div class="image-container">
+            <a href="https://ejemplo.com" target="_blank">
+                <img class="clickable-image" src="comprar.png" alt="Comprar">
+            </a>
+            <img class="static-image" src="casa.jpg" alt="Casa">
         </div>
-    </div>
-    <div class="glass-panel">
-        <div style="display: flex; align-items: center;">
-            <div class="image-container">
-                <a href="https://ejemplo.com" target="_blank">
-                    <img class="clickable-image" src="comprar.png" alt="Imagen clickeable">
-                </a>
-                <img class="static-image" src="casa.jpg" alt="Imagen estática">
-            </div>
-            <video controls>
-                <source src="local.mp4" type="video/mp4">
-                Tu navegador no soporta la reproducción de videos.
-            </video>
-        </div>
+        <video controls>
+            <source src="local.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
     </div>
 
     <button id="playButton">Reproducir</button>
