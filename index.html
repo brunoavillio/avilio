@@ -45,7 +45,7 @@
             align-items: center;
             position: relative;
         }
-        
+
         .image-container {
             position: relative;
             width: 150px;
@@ -133,7 +133,7 @@
         </div>
     </div>
 
-    <button id="playButton">Pausar</button>
+    <button id="playButton">Reproducir</button>
 
     <script type="module">
         import { Particle } from './js/Particle.js';
@@ -173,32 +173,24 @@
             });
         }
 
-        playButton.addEventListener('click', () => {
-    if (audio.paused) {
-        audio.play().then(() => {
-            console.log('Audio is playing');
-            playButton.textContent = 'Pausar'; // Cambiar a "Pausar"
-        }).catch(err => console.error(err));
-    } else {
-        audio.pause();
-        console.log('Audio is paused');
-        playButton.textContent = 'Reproducir'; // Cambiar a "Reproducir"
-    }
-});
-
+        playButton.addEventListener('click', async () => {
+            if (audio.paused) {
+                try {
+                    await audioAnalyzer.togglePlay();
+                    playButton.textContent = 'Pausar';
+                } catch (err) {
+                    console.error(err);
+                }
+            } else {
+                audio.pause();
+                playButton.textContent = 'Reproducir';
+            }
+        });
 
         resizeCanvas();
         animate();
 
         window.addEventListener('resize', resizeCanvas);
-
-        window.addEventListener('load', async () => {
-            try {
-                await audioAnalyzer.togglePlay();
-            } catch (err) {
-                console.log('Autoplay prevented - waiting for user interaction');
-            }
-        });
     </script>
 </body>
 </html>
