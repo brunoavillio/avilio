@@ -32,6 +32,32 @@
       padding: 20px;
     }
 
+.title {
+text-align: center;
+font-size: 1.4rem; /* Ajusta el tamaño de fuente */
+margin-top: 20px; /* Margen superior */
+color: rgb(162, 0, 255); /* Color del texto */
+}
+
+@media (max-width: 600px) {
+.title {
+  font-size: 1.5rem; /* Tamaño de fuente reducido para pantallas pequeñas */
+}
+}
+
+.title-blanco {
+text-align: center;
+font-size: 1.5rem; /* Ajusta el tamaño de fuente */
+margin-top: 20px; /* Margen superior */
+color: rgb(255, 255, 255); /* Color del texto */
+}
+
+@media (max-width: 600px) {
+.title-blanco {
+  font-size: 1.5rem; /* Tamaño de fuente reducido para pantallas pequeñas */
+}
+}
+
     .panel {
   /* Configuración base del panel */
   width: 90%;
@@ -87,7 +113,7 @@
 
     .audio-controls {
       position: fixed;
-      top: 20px;
+      top: 580px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
@@ -112,6 +138,8 @@
 </head>
 <body>
   <canvas id="background"></canvas>
+  <h2 class="title">Mateo 23:27-28</h2>
+  <h2 class="title-blanco">Pc - 120 mil</h2>
 
   <div class="audio-controls">
     <button id="playPauseButton">Reproducir</button>
@@ -120,37 +148,46 @@
   <div class="container">
     <!-- Panel 1 -->
     <div class="panel">
-        <img src="casa.jpg" alt="Imagen estática">
-        <video src="local.mp4" controls></video>
+        <img src="./pc/pc.png" alt="Imagen estática">
+        <video src="./pc/pcvideo.mp4" controls></video>
         <div class="clickable-container">
-          <a href="https://www.example.com" target="_blank">
+          <a href="https://www.instagram.com/avilio.bruno1/" target="_blank">
             <img class="clickable-image" src="comprar.png" alt="Imagen clickeable">
           </a>
         </div>
       </div>
+
+      <h2 class="title-blanco">❤</h2>
+      <h2 class="title-blanco">Samsung - 100 mil</h2>
 
     <!-- Panel 2 -->
     <div class="panel">
-        <img src="casa.jpg" alt="Imagen estática">
-        <video src="local.mp4" controls></video>
+        <video src="./sm/sm-video.mp4" controls></video>
+        <img src="./sm/sm-img.jpg" alt="Imagen estática">
         <div class="clickable-container">
-          <a href="https://www.example.com" target="_blank">
+          <a href="https://www.instagram.com/avilio.bruno1/" target="_blank">
             <img class="clickable-image" src="comprar.png" alt="Imagen clickeable">
           </a>
         </div>
       </div>
 
+      <h2 class="title">Ah! Kosmos - Beyond Dreams feat. Elif Çağlar</h2>
+      <h2 class="title-blanco">EXP GDC - 45 mil</h2>
+
     <!-- Panel 3 -->
     <div class="panel">
-        <img src="casa.jpg" alt="Imagen estática">
-        <video src="local.mp4" controls></video>
+        <img src="./epci/epci.jpg" alt="Imagen estática">
+        <video src="./epci/epci-video.mp4" controls></video>
         <div class="clickable-container">
-          <a href="https://www.example.com" target="_blank">
+          <a href="https://www.instagram.com/avilio.bruno1/" target="_blank">
             <img class="clickable-image" src="comprar.png" alt="Imagen clickeable">
           </a>
         </div>
       </div>
       
+      <h2 class="title">Te haran dudar</h2>
+      <h2 class="title">vuelve a la fuente</h2>
+      <h2 class="title-blanco">- n.n</h2>
 
   <audio id="audio" src="beyond_dreams.mp3"></audio>
   <script type="module">
